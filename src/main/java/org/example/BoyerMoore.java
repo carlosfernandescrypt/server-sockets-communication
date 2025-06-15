@@ -16,22 +16,50 @@ public class BoyerMoore implements AlgoritmoBusca {
             return -1;
         }
 
-        // Implementação básica - será expandida nos próximos commits
         int m = padrao.length();
         int n = texto.length();
-        
-        // Busca simples por enquanto
-        for (int i = 0; i <= n - m; i++) {
-            int j = 0;
-            while (j < m && texto.charAt(i + j) == padrao.charAt(j)) {
-                j++;
+
+        // Cria a tabela de bad character
+        int[] badChar = preprocessBadCharacter(padrao);
+
+        int s = 0; // deslocamento do padrão em relação ao texto
+
+        while (s <= (n - m)) {
+            int j = m - 1;
+
+            // Reduz j enquanto os caracteres do padrão e texto correspondem
+            while (j >= 0 && padrao.charAt(j) == texto.charAt(s + j)) {
+                j--;
             }
-            if (j == m) {
-                return i;
+
+            // Se o padrão está presente no deslocamento atual
+            if (j < 0) {
+                return s; // Retorna a posição onde o padrão foi encontrado
+            } else {
+                // Desloca o padrão usando bad character heuristic
+                s += Math.max(1, j - badChar[texto.charAt(s + j)]);
             }
         }
-        
-        return -1;
+
+        return -1; // Padrão não encontrado
+    }
+
+    /**
+     * Pré-processa o padrão para criar a tabela de bad character.
+     * A tabela armazena a última ocorrência de cada caractere no padrão.
+     */
+    private int[] preprocessBadCharacter(String padrao) {
+        int[] badChar = new int[NO_OF_CHARS];
+
+        // Inicializa todas as ocorrências como -1
+        Arrays.fill(badChar, -1);
+
+        // Preenche o valor atual da última ocorrência de cada caractere
+        for (int i = 0; i < padrao.length(); i++) {
+            badChar[padrao.charAt(i)] = i;
+        }
+
+        return badChar;
     }
 
     @Override
