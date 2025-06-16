@@ -2,6 +2,17 @@ package org.example;
 
 import java.util.*;
 
+/**
+ * Implementação do algoritmo Boyer-Moore para busca de padrões em strings.
+ *
+ * O algoritmo Boyer-Moore é eficiente para busca de substrings, especialmente
+ * quando o padrão é longo. Ele usa duas heurísticas principais:
+ * 1. Bad Character Rule - pula caracteres que não correspondem
+ * 2. Good Suffix Rule - usa informações sobre sufixos que já correspondem
+ *
+ * Complexidade de tempo: O(n + m) no melhor caso, O(nm) no pior caso
+ * onde n é o tamanho do texto e m é o tamanho do padrão.
+ */
 public class BoyerMoore implements AlgoritmoBusca {
 
     private static final int NO_OF_CHARS = 256;
